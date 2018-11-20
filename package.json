@@ -20,6 +20,7 @@
   },
   "license": "MIT",
   "main": "main.js",
+  "types": "main.d.ts",
   "scripts": {
     "tsc": "tsc --noEmit",
     "mocha": "test/run.sh",
