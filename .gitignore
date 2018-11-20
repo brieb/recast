@@ -9,4 +9,5 @@
 *.d.ts
 *.d.ts.map
 # Except...
+!/types/**/*.d.ts
 !babel-register.js
