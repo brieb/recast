@@ -8,3 +8,5 @@
 *.js.map
 *.d.ts
 *.d.ts.map
+# Except...
+!babel-register.js
