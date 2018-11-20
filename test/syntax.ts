@@ -9,25 +9,25 @@ describe("syntax", function() {
   // Make sure we handle all possible node types in Syntax, and no additional
   // types that are not present in Syntax.
   it("Completeness", function(done) {
-    var printer = path.join(__dirname, "../lib/printer.js");
+    var printer = path.join(__dirname, "../lib/printer.ts");
 
     fs.readFile(printer, "utf-8", function(err, data) {
       assert.ok(!err);
 
-      var ast = parse(data);
+      var ast = parse(data, { parser: require("../parsers/typescript") });
       assert.ok(ast);
 
-      var typeNames: any = {};
+      var typeNames: { [name: string]: string } = {};
       types.visit(ast, {
         visitFunctionDeclaration(path) {
           var decl = path.node;
           if (types.namedTypes.Identifier.check(decl.id) &&
               decl.id.name === "genericPrintNoParens") {
             this.traverse(path, {
-              visitSwitchCase(path: any) {
+              visitSwitchCase(path) {
                 var test = path.node.test;
                 if (test &&
-                    test.type === "Literal" &&
+                    test.type === "StringLiteral" &&
                     typeof test.value === "string") {
                   var name = test.value;
                   typeNames[name] = name;

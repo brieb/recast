@@ -1,6 +1,6 @@
 import assert from "assert";
 import sourceMap from "source-map";
-import recast from "..";
+import recast from "../main";
 import types from "../lib/types";
 var n = types.namedTypes;
 var b = types.builders;

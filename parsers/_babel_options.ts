@@ -2,8 +2,8 @@ import { ParserOptions, ParserPlugin } from "@babel/parser";
 import { getOption } from "../lib/util";
 
 export type Overrides = Partial<{
-  sourceType: ParserOptions["sourceType"],
-  strictMode: ParserOptions["strictMode"],
+  sourceType: ParserOptions["sourceType"];
+  strictMode: ParserOptions["strictMode"];
 }>;
 
 export default function getBabelOptions(options?: Overrides): ParserOptions & { plugins: ParserPlugin[] } {

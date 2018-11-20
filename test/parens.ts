@@ -1,5 +1,5 @@
 import assert from "assert";
-import esprima from "esprima";
+import * as esprima from "esprima";
 import { parse } from "../lib/parser";
 import { Printer } from "../lib/printer";
 import astTypes from "ast-types";

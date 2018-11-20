@@ -2360,6 +2360,13 @@ function genericPrintNoParens(path: any, options: any, print: any) {
     case "GraphExpression": // TODO
     case "GraphIndexExpression": // TODO
 
+    // TODO(brieb): handle new node types
+    case "ObjectTypeInternalSlot":
+    case "PrivateName":
+    case "ClassPrivateProperty":
+    case "InterfaceTypeAnnotation":
+    case "InterpreterDirective":
+
     // XML types that nobody cares about or needs to print.
     case "XMLDefaultDeclaration":
     case "XMLAnyName":

@@ -496,7 +496,12 @@ describe("lines", function() {
     });
 
     it("GuessTabWidth", function GuessTabWidthTest(done) {
-        var lines = fromString(String(GuessTabWidthTest));
+        var lines;
+        lines = fromString([
+            "function identity(x) {",
+            "    return x;",
+            "}"
+        ].join(eol));
         assert.strictEqual(lines.guessTabWidth(), 4);
 
         lines = fromString([

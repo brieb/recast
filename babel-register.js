@@ -5,4 +5,5 @@ require("@babel/register")({
   configFile: path.resolve(__dirname, ".babelrc"),
   ignore: [path.resolve(__dirname, "node_modules"), path.resolve(__dirname, "test/data")],
   extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
+  retainLines: true,
 });

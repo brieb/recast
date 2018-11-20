@@ -1,12 +1,3 @@
-"use strict";
-
-const nodeMajorVersion = parseInt(process.versions.node, 10);
-if (nodeMajorVersion < 6) {
-  // Babel 7 no longer supports Node 4 or 5.
-  // @ts-ignore A 'return' statement can only be used within a function body. [1108]
-  return;
-}
-
 import assert from "assert";
 import path from "path";
 import fs from "fs";
@@ -15,7 +6,10 @@ import types from "../lib/types";
 import {EOL as eol} from "os";
 import * as parser from "../parsers/typescript";
 
-describe("TypeScript", function() {
+// Babel 7 no longer supports Node 4 or 5.
+var nodeMajorVersion = parseInt(process.versions.node, 10);
+(nodeMajorVersion >= 6 ? describe : xdescribe)
+("TypeScript", function() {
   it('basic printing', function() {
     function check(lines: any) {
       const code = lines.join(eol);

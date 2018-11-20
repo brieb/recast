@@ -9,7 +9,7 @@ import { attach as attachComments } from "./comments";
 import * as util from "./util";
 import { Options } from "./options";
 
-export function parse(source: any, options?: Partial<Options>) {
+export function parse(source: string, options?: Partial<Options>) {
   options = normalizeOptions(options);
 
   const lines = fromString(source, options);
