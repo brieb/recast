@@ -1,18 +1,17 @@
+import { Omit } from "ast-types/types";
+
 /**
  * All Recast API functions take second parameter with configuration options,
  * documented in options.js
  */
-export interface Options {
+export interface Options extends DeprecatedOptions {
   /**
    * If you want to use a different branch of esprima, or any other module
    * that supports a .parse function, pass that module object to
    * recast.parse as options.parser (legacy synonym: options.esprima).
    * @default require("recast/parsers/esprima")
    */
-  parser: any;
-
-  /** @deprecated */
-  esprima?: any;
+  parser?: any;
 
   /**
    * Number of spaces the pretty-printer should use per tab for
@@ -20,27 +19,27 @@ export interface Options {
    * (quite reliably!) inferred from the original code.
    * @default 4
    */
-  tabWidth: number;
+  tabWidth?: number;
 
   /**
    * If you really want the pretty-printer to use tabs instead of spaces,
    * make this option true.
    * @default false
    */
-  useTabs: boolean;
+  useTabs?: boolean;
 
   /**
    * The reprinting code leaves leading whitespace untouched unless it has
    * to reindent a line, or you pass false for this option.
    * @default true
    */
-  reuseWhitespace: boolean;
+  reuseWhitespace?: boolean;
 
   /**
    * Override this option to use a different line terminator, e.g. \r\n.
    * @default require("os").EOL || "\n"
    */
-  lineTerminator: string;
+  lineTerminator?: string;
 
   /**
    * Some of the pretty-printer code (such as that for printing function
@@ -49,7 +48,7 @@ export interface Options {
    * there is no guarantee that line length will fit inside this limit.
    * @default 74
    */
-  wrapColumn: number;
+  wrapColumn?: number;
 
   /**
    * Pass a string as options.sourceFileName to recast.parse to tell the
@@ -57,7 +56,7 @@ export interface Options {
    * source map automatically.
    * @default null
    */
-  sourceFileName: string | null;
+  sourceFileName?: string | null;
 
   /**
    * Pass a string as options.sourceMapName to recast.print, and (provided
@@ -65,14 +64,14 @@ export interface Options {
    * recast.print will have a .map property for the generated source map.
    * @default null
    */
-  sourceMapName: string | null;
+  sourceMapName?: string | null;
 
   /**
    * If provided, this option will be passed along to the source map
    * generator as a root directory for relative source file paths.
    * @default null
    */
-  sourceRoot: string | null;
+  sourceRoot?: string | null;
 
   /**
    * If you provide a source map that was generated from a previous call
@@ -80,21 +79,21 @@ export interface Options {
    * composed with the new source map.
    * @default null
    */
-  inputSourceMap: string | null;
+  inputSourceMap?: string | null;
 
   /**
    * If you want esprima to generate .range information (recast only uses
    * .loc internally), pass true for this option.
    * @default false
    */
-  range: boolean;
+  range?: boolean;
 
   /**
    * If you want esprima not to throw exceptions when it encounters
    * non-fatal errors, keep this option true.
    * @default true
    */
-  tolerant: boolean;
+  tolerant?: boolean;
 
   /**
    * If you want to override the quotes used in string literals, specify
@@ -102,7 +101,7 @@ export interface Options {
    * which results in the shorter literal) Otherwise, use double quotes.
    * @default null
    */
-  quote: 'single' | 'double' | 'auto' | null;
+  quote?: 'single' | 'double' | 'auto' | null;
 
   /**
    * Controls the printing of trailing commas in object literals, array
@@ -121,14 +120,14 @@ export interface Options {
    *
    * @default false
    */
-  trailingComma: boolean;
+  trailingComma?: boolean;
 
   /**
    * Controls the printing of spaces inside array brackets.
    * See: http://eslint.org/docs/rules/array-bracket-spacing
    * @default false
    */
-  arrayBracketSpacing: boolean;
+  arrayBracketSpacing?: boolean;
 
   /**
    * Controls the printing of spaces inside object literals,
@@ -136,14 +135,14 @@ export interface Options {
    * See: http://eslint.org/docs/rules/object-curly-spacing
    * @default true
    */
-  objectCurlySpacing: boolean;
+  objectCurlySpacing?: boolean;
 
   /**
    * If you want parenthesis to wrap single-argument arrow function
    * parameter lists, pass true for this option.
    * @default false
    */
-  arrowParensAlways: boolean;
+  arrowParensAlways?: boolean;
 
   /**
    * There are 2 supported syntaxes (`,` and `;`) in Flow Object Types;
@@ -151,13 +150,18 @@ export interface Options {
    * how objects are defined in JS, making it a bit more natural to write.
    * @default true
    */
-  flowObjectCommas: boolean;
+  flowObjectCommas?: boolean;
 
   /**
    * Whether to return an array of .tokens on the root AST node.
    * @default true
    */
-  tokens: boolean;
+  tokens?: boolean;
+}
+
+interface DeprecatedOptions {
+  /** @deprecated */
+  esprima?: any;
 }
 
 var defaults: Options = {
@@ -182,9 +186,11 @@ var defaults: Options = {
   tokens: true
 }, hasOwn = defaults.hasOwnProperty;
 
+export type NormalizedOptions = Required<Omit<Options, keyof DeprecatedOptions>>;
+
 // Copy options and fill in default values.
-export function normalize(optionsParam?: Partial<Options>): Options {
-  var options = optionsParam || defaults;
+export function normalize(opts?: Options): NormalizedOptions {
+  var options = opts || defaults;
 
   function get(key: keyof Options) {
     return hasOwn.call(options, key)

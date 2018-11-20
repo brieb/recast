@@ -13,7 +13,7 @@ import FastPath from "./fast-path";
 import * as util from "./util";
 
 export interface PrintResultType {
-    code: any;
+    code: string;
     map?: any;
     toString(): string;
 }

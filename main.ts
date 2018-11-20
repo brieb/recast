@@ -1,21 +1,30 @@
 import fs from "fs";
-import types from "./lib/types";
+import types, { ASTNode } from "./lib/types";
 import { parse } from "./lib/parser";
 import { Printer } from "./lib/printer";
+import { Options } from "./lib/options";
 
-function print(node: any, options?: any) {
+function print(node: ASTNode, options?: Options) {
     return new Printer(options).print(node);
 }
 
-function prettyPrint(node: any, options?: any) {
+function prettyPrint(node: ASTNode, options?: Options) {
     return new Printer(options).printGenerically(node);
 }
 
-function run(transformer: any, options: any) {
+interface Transformer {
+    (ast: ASTNode, callback: (ast: ASTNode) => void): void;
+}
+
+interface RunOptions extends Options {
+    writeback?(code: string): void;
+}
+
+function run(transformer: Transformer, options?: RunOptions) {
     return runFile(process.argv[2], transformer, options);
 }
 
-function runFile(path: any, transformer: any, options: any) {
+function runFile(path: any, transformer: Transformer, options?: RunOptions) {
     fs.readFile(path, "utf-8", function(err, code) {
         if (err) {
             console.error(err);
@@ -26,11 +35,11 @@ function runFile(path: any, transformer: any, options: any) {
     });
 }
 
-function defaultWriteback(output: any) {
+function defaultWriteback(output: string) {
     process.stdout.write(output);
 }
 
-function runString(code: any, transformer: any, options: any) {
+function runString(code: string, transformer: Transformer, options?: RunOptions) {
     var writeback = options && options.writeback || defaultWriteback;
     transformer(parse(code, options), function(node: any) {
         writeback(print(node, options).code);
