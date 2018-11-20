@@ -1,21 +1,22 @@
-var types = require("./lib/types");
-var parse = require("./lib/parser").parse;
-var Printer = require("./lib/printer").Printer;
+import fs from "fs";
+import types from "./lib/types";
+import { parse } from "./lib/parser";
+import { Printer } from "./lib/printer";
 
-function print(node, options) {
+function print(node: any, options?: any) {
     return new Printer(options).print(node);
 }
 
-function prettyPrint(node, options) {
+function prettyPrint(node: any, options?: any) {
     return new Printer(options).printGenerically(node);
 }
 
-function run(transformer, options) {
+function run(transformer: any, options: any) {
     return runFile(process.argv[2], transformer, options);
 }
 
-function runFile(path, transformer, options) {
-    require("fs").readFile(path, "utf-8", function(err, code) {
+function runFile(path: any, transformer: any, options: any) {
+    fs.readFile(path, "utf-8", function(err, code) {
         if (err) {
             console.error(err);
             return;
@@ -25,18 +26,28 @@ function runFile(path, transformer, options) {
     });
 }
 
-function defaultWriteback(output) {
+function defaultWriteback(output: any) {
     process.stdout.write(output);
 }
 
-function runString(code, transformer, options) {
+function runString(code: any, transformer: any, options: any) {
     var writeback = options && options.writeback || defaultWriteback;
-    transformer(parse(code, options), function(node) {
+    transformer(parse(code, options), function(node: any) {
         writeback(print(node, options).code);
     });
 }
 
-Object.defineProperties(exports, {
+interface Main {
+    parse: typeof parse;
+    visit: typeof types.visit;
+    print: typeof print;
+    prettyPrint: typeof prettyPrint;
+    types: typeof types;
+    run: typeof run;
+}
+
+const main = {} as Main;
+Object.defineProperties(main, {
     /**
      * Parse a string of code into an augmented syntax tree suitable for
      * arbitrary modification and reprinting.
@@ -97,3 +108,5 @@ Object.defineProperties(exports, {
         value: run
     }
 });
+
+export default main;

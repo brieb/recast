@@ -1,8 +1,8 @@
-var assert = require("assert");
-var fs = require("fs");
-var path = require("path");
-var types = require("../lib/types");
-var parse = require("../lib/parser").parse;
+import assert from "assert";
+import fs from "fs";
+import path from "path";
+import types from "../lib/types";
+import { parse } from "../lib/parser";
 var hasOwn = Object.prototype.hasOwnProperty;
 
 describe("syntax", function() {
@@ -17,14 +17,14 @@ describe("syntax", function() {
       var ast = parse(data);
       assert.ok(ast);
 
-      var typeNames = {};
+      var typeNames: any = {};
       types.visit(ast, {
         visitFunctionDeclaration(path) {
           var decl = path.node;
           if (types.namedTypes.Identifier.check(decl.id) &&
               decl.id.name === "genericPrintNoParens") {
             this.traverse(path, {
-              visitSwitchCase(path) {
+              visitSwitchCase(path: any) {
                 var test = path.node.test;
                 if (test &&
                     test.type === "Literal" &&

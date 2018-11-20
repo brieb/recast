@@ -1,10 +1,10 @@
-var assert = require("assert");
-var fs = require("fs");
-var path = require("path");
-var types = require("../lib/types");
-var main = require("../main");
+import assert from "assert";
+import fs from "fs";
+import path from "path";
+import types from "../lib/types";
+import main from "../main";
 
-function testFile(path) {
+function testFile(path: string) {
     fs.readFile(path, "utf-8", function(err, source) {
         assert.equal(err, null);
         assert.strictEqual(typeof source, "string");
@@ -16,7 +16,7 @@ function testFile(path) {
     });
 }
 
-function addTest(name) {
+function addTest(name: string) {
     it(name, function() {
         testFile(path.join(__dirname, "..", name + ".js"));
     });

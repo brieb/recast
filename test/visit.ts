@@ -1,10 +1,10 @@
-var assert = require("assert");
-var types = require("../lib/types");
+import assert from "assert";
+import types from "../lib/types";
 var namedTypes = types.namedTypes;
 var builders = types.builders;
-var parse = require("../lib/parser").parse;
-var Printer = require("../lib/printer").Printer;
-var eol = require("os").EOL;
+import { parse } from "../lib/parser";
+import { Printer } from "../lib/printer";
+import { EOL as eol } from "os";
 
 var lines = [
     "// file comment",
@@ -36,9 +36,10 @@ describe("types.visit", function() {
             withThis.replace(thisExp, "self")
         );
 
-        var propNames = [];
-        var methods = {
-            visitProperty: function(path) {
+        var propNames: any[] = [];
+        // TODO(brieb): export context type
+        var methods: any = {
+            visitProperty: function(path: any) {
                 var key = path.node.key;
                 propNames.push(key.value || key.name);
                 this.traverse(path);
@@ -57,6 +58,7 @@ describe("types.visit", function() {
                 }
 
                 this.traverse(path);
+                return;
             }
         });
 
@@ -99,7 +101,7 @@ describe("types.visit", function() {
         var ast = parse(source);
         var printer = new Printer;
 
-        var funExpr;
+        var funExpr: any;
         types.visit(ast, {
             visitFunctionExpression: function(path) {
                 assert.strictEqual(typeof funExpr, "undefined");
