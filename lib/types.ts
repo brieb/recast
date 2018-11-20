@@ -4,3 +4,4 @@
 // have much to do anymore. Still, it might prove useful in the future.
 import astTypes from "ast-types";
 export default astTypes;
+export * from "ast-types";

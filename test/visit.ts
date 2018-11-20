@@ -1,5 +1,5 @@
 import assert from "assert";
-import types from "../lib/types";
+import types, { Visitor } from "../lib/types";
 var namedTypes = types.namedTypes;
 var builders = types.builders;
 import { parse } from "../lib/parser";
@@ -37,9 +37,8 @@ describe("types.visit", function() {
         );
 
         var propNames: any[] = [];
-        // TODO(brieb): export context type
-        var methods: any = {
-            visitProperty: function(path: any) {
+        var methods: Visitor = {
+            visitProperty: function(path) {
                 var key = path.node.key;
                 propNames.push(key.value || key.name);
                 this.traverse(path);
