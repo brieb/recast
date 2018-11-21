@@ -5,9 +5,7 @@
 
 # Ignore TypeScript-emitted files
 *.js
-*.js.map
 *.d.ts
-*.d.ts.map
 # Except...
 !/types/**/*.d.ts
 !babel-register.js
