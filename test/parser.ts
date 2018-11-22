@@ -163,7 +163,9 @@ function runTestsForParser(parserId: string) {
 
     types.visit(ast, {
       visitFunctionDeclaration: function(path) {
-        path.node.body.body.reverse();
+        if (namedTypes.BlockStatement.check(path.node.body)) {
+          path.node.body.body.reverse();
+        }
         this.traverse(path);
       }
     });
@@ -181,7 +183,7 @@ function runTestsForParser(parserId: string) {
       var lines = fromString(code, { tabWidth: tabWidth });
       assert.strictEqual(lines.length, 1);
 
-      types.visit<{ check(s: string, loc: any): any }>(parse(code, {
+      types.visit<{ check(s: any, loc: any): any }>(parse(code, {
         tabWidth: tabWidth,
         parser,
       }), {

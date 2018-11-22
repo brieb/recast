@@ -39,7 +39,7 @@ describe("types.visit", function() {
         var propNames: any[] = [];
         var methods: Visitor = {
             visitProperty: function(path) {
-                var key = path.node.key;
+                var key: any = path.node.key;
                 propNames.push(key.value || key.name);
                 this.traverse(path);
             }

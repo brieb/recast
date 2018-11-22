@@ -1,23 +1,8 @@
 import fs from "fs";
-import types, {
-    ASTNode as _ASTNode,
-    NamedTypes as _NamedTypes,
-    Builders as _Builders,
-    NodePath as _NodePath,
-    Type as _Type,
-} from "./lib/types";
+import types, { ASTNode } from "./lib/types";
 import { parse } from "./lib/parser";
 import { Printer } from "./lib/printer";
-import { Options as _Options } from "./lib/options";
-
-// Must use `export type` instead of `export { ...types... }`
-// to ensure `module.exports =` in babel-transpiled code.
-export type ASTNode = _ASTNode;
-export type Options = _Options;
-export type NamedTypes = _NamedTypes;
-export type Builders = _Builders;
-export type NodePath<N extends ASTNode = any, V = any> = _NodePath<N, V>;
-export type Type<T> = _Type<T>;
+import { Options } from "./lib/options";
 
 export interface Parser {
     parse(source: string, options?: any): ASTNode;
@@ -138,3 +123,13 @@ Object.defineProperties(main, {
 });
 
 export default main;
+
+// Type exports
+export {
+    ASTNode,
+    NamedTypes,
+    Builders,
+    NodePath,
+    Type,
+} from "./lib/types";
+export { Options } from "./lib/options";

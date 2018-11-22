@@ -2,7 +2,6 @@
 /test
 /types
 yarn.lock
-.babelrc
 
 *.ts
 !*.d.ts

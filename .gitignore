@@ -8,4 +8,3 @@
 *.d.ts
 # Except...
 !/types/**/*.d.ts
-!babel-register.js
