@@ -5,7 +5,10 @@ import types from "../lib/types";
 import { parse } from "../lib/parser";
 var hasOwn = Object.prototype.hasOwnProperty;
 
-describe("syntax", function() {
+// Babel 7 no longer supports Node 4 or 5.
+var nodeMajorVersion = parseInt(process.versions.node, 10);
+(nodeMajorVersion >= 6 ? describe : xdescribe)
+("syntax", function() {
   // Make sure we handle all possible node types in Syntax, and no additional
   // types that are not present in Syntax.
   it("Completeness", function(done) {

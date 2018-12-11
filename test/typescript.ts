@@ -307,6 +307,11 @@ testReprinting(
 );
 
 function testReprinting(pattern: any, description: any) {
+  // Babel no longer supports Node 4 or 5.
+  if (nodeMajorVersion < 6) {
+    return;
+  }
+
   describe(description, function () {
     require("glob").sync(pattern, {
       cwd: __dirname
