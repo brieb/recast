@@ -2364,6 +2364,7 @@ function genericPrintNoParens(path: any, options: any, print: any) {
     case "ObjectTypeInternalSlot":
     case "PrivateName":
     case "ClassPrivateProperty":
+    case "ClassPrivateMethod":
     case "InterfaceTypeAnnotation":
     case "InterpreterDirective":
 

@@ -378,7 +378,7 @@ function findObjectReprints(newPath: any, oldPath: any, reprints: any) {
     // Here we need to decide whether the reprinted code for newNode is
     // appropriate for patching into the location of oldNode.
 
-    if (newNode.type === oldNode.type) {
+    if ((newNode as any).type === (oldNode as any).type) {
       var childReprints: any[] = [];
 
       if (findChildReprints(newPath, oldPath, childReprints)) {
