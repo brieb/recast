@@ -249,6 +249,10 @@ function genericPrintNoParens(path: any, options: any, print: any) {
             }, "directives");
         }
 
+        if (n.interpreter) {
+            parts.push(path.call(print, "interpreter"));
+        }
+
         parts.push(path.call(function(bodyPath: any) {
             return printStatementSequence(bodyPath, options, print);
         }, "body"));
@@ -866,6 +870,9 @@ function genericPrintNoParens(path: any, options: any, print: any) {
 
     case "DirectiveLiteral": // Babel 6
         return fromString(nodeStr(n.value, options));
+
+    case "InterpreterDirective":
+        return fromString(`#!${n.value}\n`);
 
     case "ModuleSpecifier":
         if (n.local) {
@@ -2399,7 +2406,6 @@ function genericPrintNoParens(path: any, options: any, print: any) {
 
     // TODO(brieb): handle new node types
     case "InterfaceTypeAnnotation":
-    case "InterpreterDirective":
 
     // XML types that nobody cares about or needs to print.
     case "XMLDefaultDeclaration":
