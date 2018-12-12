@@ -1555,6 +1555,17 @@ function genericPrintNoParens(path: any, options: any, print: any) {
         assert.strictEqual(typeof n.value, "boolean");
         return fromString("" + n.value, options);
 
+    case "InterfaceTypeAnnotation":
+        parts.push("interface");
+        if (n.extends && n.extends.length > 0) {
+            parts.push(
+                " extends ",
+                fromString(", ").join(path.map(print, "extends"))
+            );
+        }
+        parts.push(" ", path.call(print, "body"));
+        return concat(parts);
+
     case "DeclareClass":
         return printFlowDeclaration(path, [
             "class ",
@@ -2403,9 +2414,6 @@ function genericPrintNoParens(path: any, options: any, print: any) {
     case "LetExpression": // TODO
     case "GraphExpression": // TODO
     case "GraphIndexExpression": // TODO
-
-    // TODO(brieb): handle new node types
-    case "InterfaceTypeAnnotation":
 
     // XML types that nobody cares about or needs to print.
     case "XMLDefaultDeclaration":
