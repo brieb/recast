@@ -663,6 +663,9 @@ function genericPrintNoParens(path: any, options: any, print: any) {
 
         if (isTypeAnnotation) {
             fields.push("indexers", "callProperties");
+            if (n.internalSlots != null) {
+                fields.push("internalSlots");
+            }
         }
 
         fields.push("properties");
@@ -1583,6 +1586,7 @@ function genericPrintNoParens(path: any, options: any, print: any) {
         var parent = path.getParentNode(0);
         var isArrowFunctionTypeAnnotation = !(
             namedTypes.ObjectTypeCallProperty.check(parent) ||
+            (namedTypes.ObjectTypeInternalSlot.check(parent) && parent.method) ||
             namedTypes.DeclareFunction.check(path.getParentNode(2))
         );
 
@@ -1596,8 +1600,8 @@ function genericPrintNoParens(path: any, options: any, print: any) {
 
         parts.push(
             "(",
-            fromString(", ").join(path.map(print, "params")),
-            ")"
+            printFunctionParams(path, options, print),
+            ")",
         );
 
         // The returnType is not wrapped in a TypeAnnotation, so the colon
@@ -1701,6 +1705,17 @@ function genericPrintNoParens(path: any, options: any, print: any) {
             path.call(print, "key"),
             n.optional ? "?" : "",
             ": ",
+            path.call(print, "value")
+        ]);
+
+    case "ObjectTypeInternalSlot":
+        return concat([
+            n.static ? "static " : "",
+            "[[",
+            path.call(print, "id"),
+            "]]",
+            n.optional ? "?" : "",
+            n.value.type !== "FunctionTypeAnnotation" ? ": " : "",
             path.call(print, "value")
         ]);
 
@@ -2361,7 +2376,6 @@ function genericPrintNoParens(path: any, options: any, print: any) {
     case "GraphIndexExpression": // TODO
 
     // TODO(brieb): handle new node types
-    case "ObjectTypeInternalSlot":
     case "PrivateName":
     case "ClassPrivateProperty":
     case "ClassPrivateMethod":
